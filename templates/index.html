@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Scraper</title>
+    <!-- Add Bootstrap for Styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Spinner Styles */
+        .spinner {
+            display: none; /* Hidden by default */
+            width: 3rem;
+            height: 3rem;
+            border: 0.3rem solid rgba(255, 255, 255, 0.6);
+            border-top-color: #007bff; /* Bootstrap primary color */
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Google Scraper</h2>
+        
+        <!-- Search Box -->
+        <form method="POST" class="my-4" onsubmit="showSpinner()">
+            <div class="mb-3">
+                <label for="query" class="form-label">Enter your search query:</label>
+                <input type="text" class="form-control" id="query" name="query" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+            <div class="spinner" id="spinner"></div> <!-- Loading Spinner -->
+        </form>
+
+        {% if urls %}
+        <!-- Show URLs -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <h4>Top 5 Google Results</h4>
+                <ul class="list-group">
+                    {% for url in urls %}
+                    <li class="list-group-item">
+                        <a href="{{ url }}" target="_blank">{{ url }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Show Scraped Content -->
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Scraped Content from the Websites</h4>
+                {% for url, content in results %}
+                <div class="card my-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Content from: <a href="{{ url }}" target="_blank">{{ url }}</a></h5>
+                        <p class="card-text">{{ content }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Add Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showSpinner() {
+            document.getElementById('spinner').style.display = 'block'; // Show the spinner
+        }
+    </script>
+</body>
+</html>
